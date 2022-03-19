@@ -6,6 +6,7 @@ import theme from "./pages/GlobalTheme";
 import Home from "./pages/Home";
 import Footer from "./pages/Footer";
 import Register from "./pages/register/Register";
+import Login from "./pages/Login";
 
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
           <Routes>
             <Route exact path="/" element={<Home />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<h1>Login</h1>} />
+            <Route path="/login" element={<Login/>} />
           </Routes>
           <Footer />
         </ThemeProvider>
