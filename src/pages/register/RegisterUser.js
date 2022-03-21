@@ -118,7 +118,7 @@ const RegisterUser = ({
                           <DesktopDatePicker
                             label="Date of Birth"
                             inputFormat="dd/MM/yyyy"
-                            value={Date.now()}
+                            value={userDetails.dateOfBirth}
                             onChange={(newValue) =>
                               setUserDetails({
                                 ...userDetails,
