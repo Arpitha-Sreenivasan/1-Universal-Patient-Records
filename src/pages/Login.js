@@ -1,5 +1,6 @@
 import { Avatar, FormControl, Grid, Paper, TextField, Typography, FormLabel, RadioGroup, FormControlLabel, Radio, Button } from "@mui/material";
 import React from "react";
+import icon from '../icons/upicon.png'
 
 const Login = () => {
 
@@ -8,7 +9,7 @@ const Login = () => {
     const removeit = {padding: 20, height: '80vh', margin: '30px auto', border: "1px solid black" ,  background: '#77bee8 no-repeat center'}
     return (
         <Grid container justifyContent="center">
-            <Grid item xs={5} justify="center">
+            <Grid item md={5} xs={8} justify="center">
                 <Paper style={paperStyle} variant="outlined">
                     <Typography align="center" fontSize={'1.5em'} fontWeight={'Bold'}>Login Page</Typography>
                     <Typography align="center" fontSize={'1em'}>Enter your login information</Typography>
@@ -16,9 +17,9 @@ const Login = () => {
                     <Grid margin={"auto"} width="70%">
                         <FormControl>
 
-                            <Grid direction="column" margin={"auto"} width={"100%"}>
+                            <Grid direction="column" margin={"auto"} width={"100%"} >
                                 {/* <Grid width={'100%'} style={{display:'flex'}} justifyContent="space-between"> */}
-                                <TextField xs={10} label='Username' variant="standard" placeholder="Enter your username" justify="center" fullWidth margin="dense" style={{ marginBottom: "2em", marginTop: "2em" }} required />
+                                <TextField xs={10} label='Username' variant="standard" placeholder="Enter your email" justify="center" fullWidth margin="dense" style={{ marginBottom: "2em", marginTop: "2em" }} required />
                                 {/* </Grid> */}
                                 <TextField label='Password' variant="standard" type={'password'} placeholder="Enter your password" justify="center" fullWidth margin="dense" style={{ marginBottom: "2em" }} required />
                             </Grid>
@@ -37,7 +38,7 @@ const Login = () => {
                             </Grid>
 
                             {/* Login Button */}
-                            <Grid margin={"auto"} marginTop="2em">
+                            <Grid margin={"auto"} marginTop="1em">
                                 <Button variant="contained" disableElevation>
                                     Login
                                 </Button>
@@ -45,7 +46,7 @@ const Login = () => {
 
 
                             {/* form bottom links */}
-                            <Grid width={"100%"} display="flex" justifyContent={"space-between"} marginTop={"2em"}>
+                            <Grid width={"100%"} display="flex" justifyContent={"space-between"} marginTop={"2em"} >
                                 {/* Forgot password link */}
                                 <Grid>
                                     <a href="#">Forgot password</a>
@@ -67,11 +68,12 @@ const Login = () => {
 
 
 
-            <Grid item xs={3}>
+            <Grid item md={3} sx={{ display: { xs: 'none', sm: 'none', md: 'block' } }}>
                 <Paper style={removeit} variant="outlined">
-                    <Grid marginTop={"70%"}>
-                    <Typography align="center" fontSize={'1.5em'}>Welcome to our </Typography>
-                    <Typography align="center" fontSize={'1.5em'}>Brand Name</Typography>
+                    <Grid marginTop={"60%"}>
+                    <Typography align="center" fontSize={'1.5em'}><b>Welcome To</b> </Typography>
+                
+                    <Typography align="center" fontSize={'1.5em'}> <img src={icon} width="70%"></img> </Typography>
                     </Grid>
                 </Paper>
             </Grid>
