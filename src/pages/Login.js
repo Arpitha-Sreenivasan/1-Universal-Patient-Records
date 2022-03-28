@@ -45,7 +45,7 @@ const Login = () => {
 
           <Grid margin={"auto"} width="70%">
             <FormControl>
-              <Grid  margin={"auto"} width={"100%"}>
+              <Grid margin={"auto"} width={"100%"}>
                 {/* <Grid width={'100%'} style={{display:'flex'}} justifyContent="space-between"> */}
                 <TextField
                   xs={10}
