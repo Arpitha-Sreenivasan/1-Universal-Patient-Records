@@ -12,7 +12,14 @@ import { Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
 
 const pages = ['Login', 'Register'];
-const settings = ['Profile', 'Logout'];
+const settings = [{
+        name: 'Profile',
+        link: `${process.env.PUBLIC_URL}/doctor/profile`
+    }, {
+        name: 'Logout',
+        link: `${process.env.PUBLIC_URL}/logout`
+    }
+];
 
 export default function Navbar() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -44,7 +51,7 @@ export default function Navbar() {
                         component="div"
                         sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
                     >
-                        <img src="logo.svg" alt="logo-alt" style={{ 'color': 'white' }} width="128px" height="48px" />
+                        <img src={process.env.PUBLIC_URL + "/Logo.svg"} alt="logo-alt" style={{ 'color': 'white' }} width="128px" height="48px" />
                     </Typography>
                 </Link>
                 <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -77,8 +84,8 @@ export default function Navbar() {
                             display: { xs: 'block', md: 'none' },
                         }}
                     >
-                        {pages.map((page) => (
-                            <MenuItem key={page} onClick={handleCloseNavMenu}>
+                        {pages.map((page,pos) => (
+                            <MenuItem key={pos+100} onClick={handleCloseNavMenu}>
                                 <Link to={`./${page.toLowerCase()}`}>
                                 <Typography color="black" textAlign="center">{page}</Typography>
                                 </Link>
@@ -97,10 +104,10 @@ export default function Navbar() {
                     </Link>
                 </Typography>
                 <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex', justifyContent:'end' } }}>
-                    {pages.map((page) => (
+                    {pages.map((page, pos) => (
                         <Link to={`./${page.toLowerCase()}`}>
                         <Button
-                            key={page}
+                            key={pos}
                             onClick={handleCloseNavMenu}
                             sx={{ my: 2, mx: 1, color: 'black', display: 'block', ':hover': {
                                 bgcolor: '#d6ebf8',
@@ -135,9 +142,11 @@ export default function Navbar() {
                         onClose={handleCloseUserMenu}
                     >
                         {settings.map((setting) => (
-                            <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                <Typography textAlign="center">{setting}</Typography>
-                            </MenuItem>
+                            <Link style={{textDecoration: 'none'}} to={setting.link}>
+                                <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
+                                    <Typography color="black" sx={{textDecoration: 'none'}} textAlign="center">{setting.name}</Typography>
+                                </MenuItem>
+                            </Link>
                         ))}
                     </Menu>
                 </Box>

@@ -10,7 +10,7 @@ const theme = createTheme({
         ].join(','),
     },
     palette: {
-        myBlue: {
+        primary: {
             main: '#77bee8'
         },
         blueAccent: {
@@ -25,19 +25,19 @@ const theme = createTheme({
         myPink: {
             main: '#fb0066'
         },
-        myRed: {
+        error: {
             main: '#ff1f3d'
         },
-        myYellow: {
+        warning: {
             main: '#F5D60C'
         },
         myOrange: {
             main: '#f0ab56'
         },
-        myPurple: {
+        secondary: {
             main: '#5603AD'
         },
-        myGreen: {
+        success: {
             main: '#aaea85'
         },
         myTeal: {

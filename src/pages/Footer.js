@@ -9,7 +9,7 @@ export default function Footer() {
       sx={{
         backgroundColor: "black",
         color: "white",
-        marginTop: "25px",
+        marginTop: "25px"
       }}
       container
       spacing={2}
