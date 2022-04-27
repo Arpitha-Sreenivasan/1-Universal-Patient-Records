@@ -11,13 +11,21 @@ import {
   Radio,
   Button,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import icon from "../icons/upicon.png";
 
 const Login = () => {
+
+    const initialstate = {
+        email:"",
+        password:""
+    }
+
+    const [userDetails, setUserDetails] = useState(initialstate);
+    
+
   const paperStyle = {
     padding: 20,
-    height: "80vh",
     margin: "30px auto",
     border: "1px solid black",
   };
@@ -27,15 +35,14 @@ const Login = () => {
   };
   const removeit = {
     padding: 20,
-    height: "80vh",
     margin: "30px auto",
     border: "1px solid black",
     background: "#77bee8 no-repeat center",
   };
   return (
     <Grid container justifyContent="center">
-      <Grid item md={5} xs={8} justify="center">
-        <Paper style={paperStyle} variant="outlined">
+      <Grid item md={5} xs={8} justify="center" height={'100%'}>
+        <Grid style={paperStyle}  position={'relative'}>
           <Typography align="center" fontSize={"1.5em"} fontWeight={"Bold"}>
             Login Page
           </Typography>
@@ -43,31 +50,35 @@ const Login = () => {
             Enter your login information
           </Typography>
 
-          <Grid margin={"auto"} width="70%">
+          <Grid margin={"auto"} width="70%" height={'100%'} position={'relative'} display={'flex'} flexDirection='column' justifyContent={'space-between'}>
             <FormControl>
               <Grid margin={"auto"} width={"100%"}>
                 {/* <Grid width={'100%'} style={{display:'flex'}} justifyContent="space-between"> */}
                 <TextField
                   xs={10}
                   label="Email"
-                  variant="standard"
+                //   variant="standard"
                   placeholder="Enter your email"
                   justify="center"
                   fullWidth
                   margin="dense"
-                  style={{ marginBottom: "2em", marginTop: "2em" }}
+                  style={{ marginBottom: "2em", marginTop:'2em'}}
+                  id="email"
+                  name="email"
                   required
                 />
                 {/* </Grid> */}
                 <TextField
                   label="Password"
-                  variant="standard"
+                //   variant="standard"
                   type={"password"}
                   placeholder="Enter your password"
                   justify="center"
                   fullWidth
                   margin="dense"
-                  style={{ marginBottom: "2em" }}
+                  style={{ marginBottom:'2em' }}
+                  id="password"
+                  name="password"
                   required
                 />
               </Grid>
@@ -75,7 +86,7 @@ const Login = () => {
               {/* Radio button */}
               <Grid>
                 <FormLabel id="demo-row-radio-buttons-group-label">
-                  Login As: Please select an option
+                  Login As:
                 </FormLabel>
                 <RadioGroup
                   row
@@ -124,26 +135,29 @@ const Login = () => {
               <Grid></Grid>
             </FormControl>
           </Grid>
-        </Paper>
+        </Grid>
       </Grid>
 
       <Grid
         item
         md={3}
         sx={{ display: { xs: "none", sm: "none", md: "block" } }}
+        height={"100%"}
       >
-        <Paper style={removeit} variant="outlined">
-          <Grid marginTop={"60%"}>
+        <Grid style={removeit}
+         minHeight={"490px"}
+         height={'100%'}
+          variant="outlined">
+          <Grid>
             <Typography align="center" fontSize={"1.5em"}>
               <b>Welcome To</b>{" "}
             </Typography>
 
-            <Typography align="center" fontSize={"1.5em"}>
-              {" "}
+            <Typography align="center" fontSize={"1.5em"} height={''}>
               <img src={icon} width="70%"></img>{" "}
             </Typography>
           </Grid>
-        </Paper>
+        </Grid>
       </Grid>
     </Grid>
   );

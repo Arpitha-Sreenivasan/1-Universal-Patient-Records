@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import Footer from "./pages/Footer";
 import Register from "./pages/register/Register";
 import Login from "./pages/Login";
+import TestDetail from "./pages/testpage";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Route exact path="/" element={<Home />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/test-data" element={<TestDetail/>}/>
           </Routes>
           <Footer />
         </ThemeProvider>
