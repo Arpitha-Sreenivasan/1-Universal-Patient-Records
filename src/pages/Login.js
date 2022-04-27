@@ -23,6 +23,10 @@ const Login = () => {
 
     const [userDetails, setUserDetails] = useState(initialstate);
     
+    function logindata(e){
+      e.preventDefault();
+      console.log(userDetails);
+    }
 
   const paperStyle = {
     padding: 20,
@@ -50,6 +54,8 @@ const Login = () => {
             Enter your login information
           </Typography>
 
+          <form onSubmit={logindata}>
+    
           <Grid margin={"auto"} width="70%" height={'100%'} position={'relative'} display={'flex'} flexDirection='column' justifyContent={'space-between'}>
             <FormControl>
               <Grid margin={"auto"} width={"100%"}>
@@ -65,6 +71,8 @@ const Login = () => {
                   style={{ marginBottom: "2em", marginTop:'2em'}}
                   id="email"
                   name="email"
+                  value={userDetails.email}
+                  onChange={(e)=>setUserDetails(e.target.value)}
                   required
                 />
                 {/* </Grid> */}
@@ -79,6 +87,8 @@ const Login = () => {
                   style={{ marginBottom:'2em' }}
                   id="password"
                   name="password"
+                  value={userDetails.password}
+                  onChange={(e)=>setUserDetails(e.target.value)}
                   required
                 />
               </Grid>
@@ -109,9 +119,10 @@ const Login = () => {
 
               {/* Login Button */}
               <Grid margin={"auto"} marginTop="1em">
-                <Button variant="contained" disableElevation>
+                <button type="submit" >
+                  {/* variant="contained" disableElevation */}
                   Login
-                </Button>
+                </button>
               </Grid>
 
               {/* form bottom links */}
@@ -135,6 +146,7 @@ const Login = () => {
               <Grid></Grid>
             </FormControl>
           </Grid>
+          </form>
         </Grid>
       </Grid>
 

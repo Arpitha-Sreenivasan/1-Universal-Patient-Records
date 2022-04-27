@@ -28,6 +28,10 @@ import {
 
     const [userDetails, setUserDetails] = useState(initialstate);
 
+    function testdata(e){
+      e.preventDefault();
+      console.log(userDetails);
+    }
       return(
           <div>
               <Grid container 
@@ -44,7 +48,7 @@ import {
                         Test Details
                     </Typography>
 
-                    <form onSubmit={console.log(userDetails)}>
+                    <form onSubmit={testdata}>
 
                     
                         <Grid width={"100%"}>
