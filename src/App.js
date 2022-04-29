@@ -9,6 +9,7 @@ import Register from "./pages/register/Register";
 import Login from "./pages/Login";
 import Profile from "./pages/doctor/Profile";
 import TestDetail from "./pages/testpage";
+import Pateintdetails from "./pages/patientdetails/Patientdetails";
 
 function App() {
   return (
@@ -22,6 +23,8 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/doctor/profile" element={<Profile />} />
             <Route path="/test-data" element={<TestDetail/>}/>
+            <Route path="/patient/details" element={<Pateintdetails/>}/>
+          
           </Routes>
           <Footer />
         </ThemeProvider>

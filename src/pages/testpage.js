@@ -30,7 +30,7 @@ import {
 
     function testdata(e){
       e.preventDefault();
-      console.log(userDetails);
+      console.log(initialstate);
     }
       return(
           <div>

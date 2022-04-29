@@ -119,10 +119,10 @@ const Login = () => {
 
               {/* Login Button */}
               <Grid margin={"auto"} marginTop="1em">
-                <button type="submit" >
+                <Button variant="contained" type="submit" >
                   {/* variant="contained" disableElevation */}
                   Login
-                </button>
+                </Button>
               </Grid>
 
               {/* form bottom links */}
