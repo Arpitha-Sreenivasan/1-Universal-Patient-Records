@@ -10,6 +10,8 @@ import Login from "./pages/Login";
 import Profile from "./pages/doctor/Profile";
 import TestDetail from "./pages/testpage";
 import Pateintdetails from "./pages/patientdetails/Patientdetails";
+import MedicalRecords from "./pages/patient/MedicalRecords";
+import TestRecords from "./pages/patient/TestRecords";
 
 function App() {
   return (
@@ -24,7 +26,8 @@ function App() {
             <Route path="/doctor/profile" element={<Profile />} />
             <Route path="/test-data" element={<TestDetail/>}/>
             <Route path="/patient/details" element={<Pateintdetails/>}/>
-          
+            <Route path="/records" element={<MedicalRecords/>} />
+            <Route path="/tests" element={<TestRecords/>} />
           </Routes>
           <Footer />
         </ThemeProvider>
