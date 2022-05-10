@@ -58,7 +58,6 @@ export default function DoctorList() {
     doctorList.forEach((doctor) => {
         rows.push({
             ...doctor,
-            
             'id': doctor.Doctor_License_No,
         });
     });
@@ -112,8 +111,6 @@ export default function DoctorList() {
                 );
             }
         }
-
-
     ];
     return (
         <>

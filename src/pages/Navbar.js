@@ -11,7 +11,30 @@ import { Avatar } from "@mui/material";
 import { Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
 
-const pages = ['Login', 'Register'];
+const navLinks = [{
+        'page': 'Login',
+        'route': '/login'
+    }, {
+        'page': 'Register',
+        'route': '/register'
+    }, {
+        'page': 'Add Medical Records',
+        'route': '/records/upload'
+    }, {
+        'page': 'Upload Test Reports',
+        'route': '/test-data'
+    }, {
+        'page': 'Doctors List',
+        'route': '/doctors'
+    }, {
+        'page': 'Medical Records',
+        'route': '/records'
+    }, {
+        'page': 'Test Reports',
+        'route': '/tests'
+    }
+]
+
 const settings = [{
         name: 'Profile',
         link: `${process.env.PUBLIC_URL}/doctor/profile`
@@ -62,7 +85,7 @@ export default function Navbar() {
                         aria-haspopup="true"
                         onClick={handleOpenNavMenu}
                         color="inherit"
-                        sx = {{ background: 'black'}}
+                        sx = {{ background: 'transparent'}}
                     >
                         <MenuIcon />
                     </IconButton>
@@ -84,13 +107,24 @@ export default function Navbar() {
                             display: { xs: 'block', md: 'none' },
                         }}
                     >
-                        {pages.map((page,pos) => (
+                        {
+                            navLinks.map((nav) => {
+                                return (
+                                    <MenuItem key={nav.route} onClick={handleCloseNavMenu}>
+                                        <Link to={nav.route}>
+                                            <Typography color="black" textAlign="center">{nav.page}</Typography>
+                                        </Link>
+                                    </MenuItem>
+                                );
+                            })
+                        }
+                        {/* {pages.map((page,pos) => (
                             <MenuItem key={pos+100} onClick={handleCloseNavMenu}>
                                 <Link to={`./${page.toLowerCase()}`}>
                                 <Typography color="black" textAlign="center">{page}</Typography>
                                 </Link>
                             </MenuItem>
-                        ))}
+                        ))} */}
                     </Menu>
                 </Box>
                 <Typography
@@ -104,7 +138,22 @@ export default function Navbar() {
                     </Link>
                 </Typography>
                 <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex', justifyContent:'end' } }}>
-                    {pages.map((page, pos) => (
+                    {   
+                        navLinks.map((nav) => (
+                        <Link to={nav.route}>
+                        <Button
+                            key={nav.route + "$"}
+                            onClick={handleCloseNavMenu}
+                            sx={{ my: 2, mx: 1, color: 'black', display: 'block', ':hover': {
+                                bgcolor: '#d6ebf8',
+                                color: 'black',
+                              }, }}
+                        >
+                            {nav.page}
+                        </Button>
+                        </Link>
+                    ))}
+                    {/* {pages.map((page, pos) => (
                         <Link to={`./${page.toLowerCase()}`}>
                         <Button
                             key={pos}
@@ -117,7 +166,7 @@ export default function Navbar() {
                             {page}
                         </Button>
                         </Link>
-                    ))}
+                    ))} */}
                 </Box>
                 <Box sx={{ flexGrow: 0 }}>
                     <Tooltip title="Open settings">

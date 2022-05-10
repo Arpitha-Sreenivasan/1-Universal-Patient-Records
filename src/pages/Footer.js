@@ -11,6 +11,8 @@ export default function Footer() {
         color: "white",
         marginTop: "25px"
       }}
+      position="fixed"
+      bottom={0}
       container
       spacing={2}
       justifyContent="center"

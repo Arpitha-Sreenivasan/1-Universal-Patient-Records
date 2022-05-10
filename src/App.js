@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Header from "./pages/Header";
-import { ThemeProvider } from "@mui/material";
+import { Grid, ThemeProvider } from "@mui/material";
 import theme from "./pages/GlobalTheme";
 import Home from "./pages/Home";
 import Footer from "./pages/Footer";
@@ -16,6 +16,7 @@ import DoctorList from "./pages/admin/DoctorList";
 
 // CSS IMPORTS
 import "./App.css";
+import { Box } from "@mui/system";
 
 function App() {
   return (

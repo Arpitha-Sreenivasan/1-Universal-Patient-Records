@@ -38,7 +38,8 @@ const theme = createTheme({
             main: '#5603AD'
         },
         success: {
-            main: '#aaea85'
+            main: '#60cb23'
+            // main: '#aaea85',
         },
         myTeal: {
             main: '#76E8D5'
