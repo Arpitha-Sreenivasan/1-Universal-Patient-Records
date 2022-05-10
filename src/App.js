@@ -12,6 +12,7 @@ import TestDetail from "./pages/testpage";
 import Pateintdetails from "./pages/patientdetails/Patientdetails";
 import MedicalRecords from "./pages/patient/MedicalRecords";
 import TestRecords from "./pages/patient/TestRecords";
+import DoctorList from "./pages/admin/DoctorList";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
             <Route path="/patient/details" element={<Pateintdetails/>}/>
             <Route path="/records" element={<MedicalRecords/>} />
             <Route path="/tests" element={<TestRecords/>} />
+            <Route path="/doctors" element={<DoctorList/>} />
           </Routes>
           <Footer />
         </ThemeProvider>
