@@ -2,7 +2,6 @@ import React from 'react';
 import { Button } from '@mui/material';
 import ShowRecord from '@mui/icons-material/PreviewOutlined';
 import DataGridHelper from '../DataGridHelper';
-import GridRowEnlarger from '../GridRowEnlarger';
 
 export default function MedicalRecords() {
     const [selectedRow, setSelectedRow] = React.useState(null);
