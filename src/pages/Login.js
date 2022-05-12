@@ -13,7 +13,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import icon from "../icons/upicon.png";
 
-const Login = () => {
+const Login = (props) => {
   const initialstate = {
     Aadhaar_Number: "",
     Password: "",
@@ -49,13 +49,15 @@ const Login = () => {
         .then((response) => response.json())
         .then((data) => {
           console.log("Return ", data);
+          console.log(userDetails);
           if (
-            data.Aadhaar_Number == userDetails.Aadhaar_Number &&
+            data.Aadhar_Number == userDetails.Aadhaar_Number &&
             data.Password == userDetails.Password
           ) {
             console.log("VALID USERRR");
             localStorage.setItem("Aadhaar_Number", userDetails.Aadhaar_Number);
             localStorage.setItem("Role", "Patient");
+            props.setLogIn(true);
             navigate("./add-consultation");
           } else {
             console.log("INVALID USER");
@@ -74,14 +76,15 @@ const Login = () => {
         .then((data) => {
           console.log(data);
           if (
-            data.Aadhaar_Number == userDetails.Aadhaar_Number &&
-            data.Password == userDetails.Password
+            data.Aadhar_Number == userDetails.Aadhaar_Number &&
+            data.Password == userDetails.Password && data.Is_verified == true
           ) {
             console.log("VALID USERRR");
             localStorage.setItem("Aadhaar_Number", userDetails.Aadhaar_Number);
             localStorage.setItem("Role", "Doctor");
+            props.setLogIn(true);
             // TODO: ADD SEARCH BAR PATH
-            navigate("./add-consultation");
+            navigate("../search-patient");
           } else {
             console.log("INVALID USER");
           }
@@ -193,9 +196,7 @@ const Login = () => {
                     Login
                   </Button>
                 </Grid>
-                <p style={{ backgroundColor: "#ff4040" }}>
-                  PLEASE ENTER VALID CREDENTIALS
-                </p>
+                
                 {/* form bottom links */}
                 <Grid
                   width={"100%"}
@@ -222,7 +223,7 @@ const Login = () => {
       >
         <Grid
           style={removeit}
-          minHeight={"543px"}
+          minHeight={"490px"}
           height={"100%"}
           variant="outlined"
         >

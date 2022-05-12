@@ -70,7 +70,7 @@ const settings = [
   },
 ];
 
-export default function Navbar() {
+export default function Navbar(props) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -139,7 +139,11 @@ export default function Navbar() {
               display: { xs: "block", md: "none" },
             }}
           >
-            {navLinks.map((nav) => {
+            {navLinks
+            .filter((nav) => {
+              return nav.isProtected == props.logIn
+            })
+            .map((nav) => {
               return (
                 <MenuItem key={nav.route} onClick={handleCloseNavMenu}>
                   <Link to={nav.route}>
@@ -175,7 +179,11 @@ export default function Navbar() {
             display: { xs: "none", md: "flex", justifyContent: "end" },
           }}
         >
-          {navLinks.map((nav) => (
+          {navLinks
+          .filter((nav) => {
+            return nav.isProtected == props.logIn
+          })
+          .map((nav) => (
             <Link to={nav.route}>
               <Button
                 key={nav.route + "$"}
