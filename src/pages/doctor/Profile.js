@@ -1,32 +1,73 @@
-import React, { useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Grid, Card, CardHeader, CardContent, TextField, Typography, Divider, CardActions, Button, Alert, IconButton, Collapse } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
 import EditIcon from '@mui/icons-material/EditOutlined';
 import CloseIcon from '@mui/icons-material/Close';
 
 export default function Profile() {
-    const doctorDeatils = {
-        'aadharNumber': '4580256322201524',
-        'licenseNumber': 'G-36076',
-        'qualification': 'M.B.B.S, M.D',
-        'firstName': 'Adam',
-        'lastName': 'John',
-        'email': 'adamjohn@gmail.com',
-        'contact': '9898336060',
-        'gender': 'Male',
-        'phone': '0261-2322112',
-        'password': 'YouWontFindRealOne',
-        'confirmPassowrd': '',
-        'address': 'A-1001, Shiv Shakti Apartment,\nVesu,\nSurat-395007',
-    };
-
-    const [doctorInfo, setDoctorInfo] = useState(doctorDeatils);
+    const [doctorInfo, setDoctorInfo] = useState({
+        'Aadhar_Number': "",
+        'Contact': "",
+        'DOB': "",
+        'Email': "",
+        'First_Name': "",
+        'Gender': "",
+        'Last_Name':"",
+        'License_Number': "",
+        'LocationID': "",
+        'Password': "",
+        'Qualification': ""
+    });
     const [isEditable, toggleEditable] = useState(true);
     const [alertInfo, setAlertInfo] = useState({
         'type': 'success',
         'text': ''
     });
     const [showAlert, setShowAlert] = useState(false);
+
+    useEffect(() => {
+        const doctorDetails = {
+            'AadharNumber': '4580256322201524',
+            'licenseNumber': 'G-36076',
+            'qualification': 'M.B.B.S, M.D',
+            'firstName': 'Adam',
+            'lastName': 'John',
+            'email': 'adamjohn@gmail.com',
+            'contact': '9898336060',
+            'gender': 'Male',
+            'phone': '0261-2322112',
+            'password': 'YouWontFindRealOne',
+            'confirmPassowrd': '',
+            'address': 'A-1001, Shiv Shakti Apartment,\nVesu,\nSurat-395007',
+        };
+        localStorage.setItem("aadhar", "7451389455");
+        localStorage.setItem("role", "Doctor");
+        const aadharNum = localStorage.getItem("aadhar");
+        fetch(`http://127.0.0.1:8000/getDoctor/${aadharNum}`, {
+            method: "GET",
+            'Content-Type': 'application/json'
+            }).then((response) => response.json())
+            .then((response) => {
+                console.log(response);
+                setDoctorInfo(response);
+            }).catch((err) => {
+                console.log(err);
+                console.log(doctorDetails);
+                setDoctorInfo({
+                    'Aadhar_Number': "",
+                    'Contact': "",
+                    'DOB': "",
+                    'Email': "",
+                    'First_Name': "",
+                    'Gender': "",
+                    'Last_Name':"",
+                    'License_Number': "",
+                    'LocationID': "",
+                    'Password': "",
+                    'Qualification': ""
+                });
+            });
+    }, []);
 
     const hideAlert = () => {
         setShowAlert(false);
@@ -46,6 +87,8 @@ export default function Profile() {
 
     const handleChange = (ev) => {
         let { name, value } = ev.target;
+        console.log(name + '-' + value);
+        console.log(doctorInfo);
         setDoctorInfo({
             ...doctorInfo,
             [name]: value,
@@ -54,9 +97,27 @@ export default function Profile() {
 
     const updateDoctorInfo = (ev) => {
         console.log(doctorInfo);
-        toggleEditable(true);
-        setAlert('success', 'Profile Details Updated Successfully');
-        setTimeout(hideAlert, 5000);
+        const aadharNum = localStorage.getItem("aadhar");
+        const role = localStorage.getItem("role");
+        fetch(`http://127.0.0.1:8000/${role}/${aadharNum}`, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: JSON.stringify(doctorInfo)
+        })
+        .then((res) => {
+            console.log(res);
+            toggleEditable(true);
+            setAlert('success', 'Profile Details Updated Successfully');
+            setTimeout(hideAlert, 5000);
+        }).catch((err) => {
+            console.log(err);
+            toggleEditable(true);
+            setAlert('error', 'Error Updating Profile Details');
+            setTimeout(hideAlert, 5000);
+        })
     };
 
     return (
@@ -85,13 +146,13 @@ export default function Profile() {
                         </Typography>
                         <Grid container justifyContent="evenly" my={1}>
                             <Grid item xs={12} lg={4} p={1}>
-                                <TextField name='aadharNumber' id='aadhar_number' fullWidth margin="dense" id="outlined-basic" label="Aadhar Number" variant="outlined" defaultValue={doctorInfo.aadharNumber} inputProps={{ readOnly: true }} />
+                                <TextField name='Aadhar_Number' id='aadhar_number' fullWidth margin="dense" label="Aadhar Number" variant="outlined" value={doctorInfo.Aadhar_Number} inputProps={{ readOnly: true }} />
                             </Grid>
                             <Grid item xs={12} lg={4} p={1}>
-                                <TextField name='licenseNumber' id="license_number" fullWidth margin="dense" id="outlined-basic" label="License Number" variant="outlined" defaultValue={doctorInfo.licenseNumber} inputProps={{ readOnly: true }} />
+                                <TextField name='License_Number' id="license_number" fullWidth margin="dense" label="License Number" variant="outlined" value={doctorInfo.License_Number} inputProps={{ readOnly: true }} />
                             </Grid>
                             <Grid item xs={12} lg={4} p={1}>
-                                <TextField name='qualification' id='doct_qualification' fullWidth margin="dense" id="outlined-basic" label="Qualification" variant="outlined" defaultValue={doctorInfo.qualification} onChange={handleChange} inputProps={{ readOnly: isEditable }} />
+                                <TextField name='Qualification' id='doct_qualification' fullWidth margin="dense" label="Qualification" variant="outlined" value={doctorInfo.Qualification} onChange={handleChange} inputProps={{ readOnly: isEditable }} />
                             </Grid>
                         </Grid>
                         <Divider />
@@ -101,13 +162,13 @@ export default function Profile() {
                         </Typography>
                         <Grid container justifyContent="evenly" my={1}>
                             <Grid item xs={12} lg={4} p={1}>
-                                <TextField name='firstName' id="first_name" fullWidth margin="dense" id="outlined-basic" label="First Name" variant="outlined" defaultValue={doctorInfo.firstName} onChange={handleChange} inputProps={{ readOnly: isEditable }} />
+                                <TextField name='First_Name' id="first_name" fullWidth margin="dense" label="First Name" variant="outlined" value={doctorInfo.First_Name} onChange={handleChange} inputProps={{ readOnly: isEditable }} />
                             </Grid>
                             <Grid item xs={12} lg={4} p={1}>
-                                <TextField name='lastName' id="last_name" fullWidth margin="dense" id="outlined-basic" label="Last Name" variant="outlined" defaultValue={doctorInfo.lastName} onChange={handleChange} inputProps={{ readOnly: isEditable }} />
+                                <TextField name='Last_Name' id="last_name" fullWidth margin="dense" label="Last Name" variant="outlined" value={doctorInfo.Last_Name} onChange={handleChange} inputProps={{ readOnly: isEditable }} />
                             </Grid>
                             <Grid item xs={12} lg={4} p={1}>
-                                <TextField name='gender' id="doct_gender" fullWidth margin="dense" id="outlined-basic" label="Gender" variant="outlined" defaultValue={doctorInfo.gender} inputProps={{ readOnly: isEditable }} />
+                                <TextField name='Gender' id="doct_gender" fullWidth margin="dense" label="Gender" variant="outlined" value={doctorInfo.Gender} inputProps={{ readOnly: isEditable }} />
                             </Grid>
                         </Grid>
                         <Divider />
@@ -116,14 +177,11 @@ export default function Profile() {
                             Contact Information:
                         </Typography>
                         <Grid container justifyContent="evenly" my={1}>
-                            <Grid item xs={12} lg={4} p={1}>
-                                <TextField name='email' id="doct_email" fullWidth margin="dense" id="outlined-basic" label="Email" variant="outlined" defaultValue={doctorInfo.email} inputProps={{ readOnly: true }} onChange={handleChange} />
+                            <Grid item xs={12} lg={6} p={1}>
+                                <TextField name='Email' id="doct_email" fullWidth margin="dense" label="Email" variant="outlined" value={doctorInfo.Email} inputProps={{ readOnly: true }} onChange={handleChange} />
                             </Grid>
-                            <Grid item xs={12} lg={4} p={1}>
-                                <TextField name='contact' id="doct_contact" fullWidth margin="dense" id="outlined-basic" label="Contact" variant="outlined" defaultValue={doctorInfo.contact} onChange={handleChange} inputProps={{ readOnly: isEditable }} />
-                            </Grid>
-                            <Grid item xs={12} lg={4} p={1}>
-                                <TextField name='phone' id="doct_phone" fullWidth margin="dense" id="outlined-basic" label="Phone" variant="outlined" defaultValue={doctorInfo.phone} onChange={handleChange} inputProps={{ readOnly: isEditable }} />
+                            <Grid item xs={12} lg={6} p={1}>
+                                <TextField name='Contact' id="doct_contact" fullWidth margin="dense" label="Contact" variant="outlined" value={doctorInfo.Contact} onChange={handleChange} inputProps={{ readOnly: isEditable }} />
                             </Grid>
                         </Grid>
                         <Divider />
@@ -133,10 +191,10 @@ export default function Profile() {
                         </Typography>
                         <Grid container justifyContent="evenly" my={1}>
                             <Grid item xs={12} lg={6} p={1}>
-                                <TextField name='password' id="doct_password" fullWidth margin="dense" type="password" id="outlined-basic" label="Password" variant="outlined" defaultValue={doctorInfo.password} onChange={handleChange} inputProps={{ readOnly: isEditable }} />
+                                <TextField name='Password' id="doct_password" fullWidth margin="dense" type="password" label="Password" variant="outlined" value={doctorInfo.Password} onChange={handleChange} inputProps={{ readOnly: isEditable }} />
                             </Grid>
                             <Grid item xs={12} lg={6} p={1}>
-                                <TextField name='confirmPassowrd' id="doct_conf_password" fullWidth margin="dense" type="password" id="outlined-basic" label="Confirm Password" variant="outlined" defaultValue={""} onChange={handleChange} inputProps={{ readOnly: isEditable }} />
+                                <TextField name='ConfirmPassowrd' id="doct_conf_password" fullWidth margin="dense" type="password" label="Confirm Password" variant="outlined" value={""} onChange={handleChange} inputProps={{ readOnly: isEditable }} />
                             </Grid>
                         </Grid>
                         <Divider />
@@ -146,7 +204,7 @@ export default function Profile() {
                         </Typography>
                         <Grid container justifyContent="evenly" my={1}>
                             <Grid item xs={12} p={1}>
-                                <TextField name='address' id="doct_addr" multiline maxRows={5} fullWidth margin="dense" id="outlined-basic" label="Address" variant="outlined" defaultValue={doctorInfo.address} inputProps={{ readOnly: isEditable }} onChange={handleChange} />
+                                <TextField name='Address' id="doct_addr" multiline maxRows={5} fullWidth margin="dense" id="outlined-basic" label="Address" variant="outlined" value={doctorInfo.Address} inputProps={{ readOnly: isEditable }} onChange={handleChange} />
                             </Grid>
                         </Grid>
                     </CardContent>

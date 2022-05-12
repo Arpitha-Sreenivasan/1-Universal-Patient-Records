@@ -157,7 +157,7 @@ const Login = () => {
         height={"100%"}
       >
         <Grid style={removeit}
-         minHeight={"490px"}
+         minHeight={"400px"}
          height={'100%'}
           variant="outlined">
           <Grid>

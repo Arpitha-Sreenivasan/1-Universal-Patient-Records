@@ -13,25 +13,40 @@ import { Link } from "react-router-dom";
 
 const navLinks = [{
         'page': 'Login',
-        'route': '/login'
+        'route': '/login',
+        'isProtected': false
     }, {
-        'page': 'Register',
-        'route': '/register'
+        'page': 'Register Patient',
+        'route': '/register-patient',
+        'isProtected': false
+    },{
+        'page': 'Register Doctor',
+        'route': '/register-doctor',
+        'isProtected': false
     }, {
         'page': 'Add Medical Records',
-        'route': '/records/upload'
+        'route': '/records/upload',
+        'isProtected': true
     }, {
         'page': 'Upload Test Reports',
-        'route': '/test-data'
+        'route': '/test-data',
+        'isProtected': true
     }, {
         'page': 'Doctors List',
-        'route': '/doctors'
+        'route': '/doctors',
+        'isProtected': true
     }, {
         'page': 'Medical Records',
-        'route': '/records'
+        'route': '/records',
+        'isProtected': true
     }, {
         'page': 'Test Reports',
-        'route': '/tests'
+        'route': '/tests',
+        'isProtected': true
+    }, {
+        'page': 'Patient List',
+        'route': '/patients',
+        'isProtected': true
     }
 ]
 

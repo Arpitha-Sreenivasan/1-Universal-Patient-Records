@@ -76,6 +76,7 @@ export default function DoctorList() {
         delete row.id;
         row.Active = <Switch onChange={onDoctorActiveStatusChange.bind(this, row)} defaultChecked={row.Is_Active} />;
         row.Verify = row.Is_Verified ? "Verified" : <Button variant="contained" color="success" onClick={verifyDoctor.bind(this, row)}>Verify</Button>;
+        delete row.Is_Active;
         setSelectedRow(row);
         setOpen(true);
         console.log(row);
