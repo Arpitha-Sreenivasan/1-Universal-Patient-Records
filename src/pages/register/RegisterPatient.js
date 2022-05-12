@@ -17,6 +17,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const RegisterPatient = () => {
   const initialState = {
@@ -28,6 +29,7 @@ const RegisterPatient = () => {
     Contact: "",
     DOB: Date.now(),
     Gender: "",
+    LocationID: Date.now(),
     Street: "",
     City: "",
     State: "",
@@ -39,6 +41,8 @@ const RegisterPatient = () => {
 
   const [patientDetails, setPatientDetails] = useState(initialState);
 
+  const navigate = useNavigate();
+
   const handleChange = (event) => {
     let { name, value } = event.target;
     setPatientDetails({ ...patientDetails, [name]: value });
@@ -49,14 +53,41 @@ const RegisterPatient = () => {
 
     console.log(patientDetails);
 
-    const url = "";
-    const response = await fetch(url, {
+    const locationObject = {
+      LocationID: patientDetails.LocationID,
+      Street: patientDetails.Street,
+      City: patientDetails.City,
+      State: patientDetails.State,
+      Pincode: patientDetails.Pincode,
+    };
+
+    const urlLocation = "http://localhost:8000/addLocation/";
+    const responseLocation = await fetch(urlLocation, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(patientDetails),
+      body: JSON.stringify(locationObject),
     });
+
+    if (responseLocation.status == 201) {
+      console.log("LOCATION ADDED");
+
+      const url = "http://localhost:8000/addPatient/";
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(patientDetails),
+      });
+
+      if (response.status == 201) {
+        console.log("PATIENT ADDED");
+
+        navigate("../Login");
+      }
+    }
   };
 
   return (
@@ -93,6 +124,7 @@ const RegisterPatient = () => {
                           value={patientDetails.First_Name}
                           onChange={handleChange}
                           fullWidth
+                          required
                         />
                       </Grid>
                       <Grid item xl={6} lg={6} md={6} sm={6} xs={12}>
@@ -103,6 +135,7 @@ const RegisterPatient = () => {
                           value={patientDetails.Last_Name}
                           onChange={handleChange}
                           fullWidth
+                          required
                         />
                       </Grid>
                     </Grid>
@@ -112,10 +145,12 @@ const RegisterPatient = () => {
                         <TextField
                           name="Email"
                           id="Email"
+                          type="email"
                           label="Email Address"
                           value={patientDetails.Email}
                           onChange={handleChange}
                           fullWidth
+                          required
                         />
                       </Grid>
                       <Grid item xl={6} lg={6} md={6} sm={6} xs={12}>
@@ -126,7 +161,9 @@ const RegisterPatient = () => {
                           label="Password"
                           value={patientDetails.Password}
                           onChange={handleChange}
+                          inputProps={{ minLength: 6, maxLength: 14 }}
                           fullWidth
+                          required
                         />
                       </Grid>
                     </Grid>
@@ -160,6 +197,9 @@ const RegisterPatient = () => {
                           value={patientDetails.Aadhaar_Number}
                           onChange={handleChange}
                           fullWidth
+                          required
+                          type="number"
+                          inputProps={{ minLength: 12, maxLength: 12 }}
                         />
                       </Grid>
                     </Grid>
@@ -173,6 +213,9 @@ const RegisterPatient = () => {
                           value={patientDetails.Contact}
                           onChange={handleChange}
                           fullWidth
+                          required
+                          type="number"
+                          inputProps={{ minLength: 10, maxLength: 10 }}
                         />
                       </Grid>
                       <Grid item xl={6} lg={6} md={6} sm={6} xs={12}>
@@ -206,6 +249,7 @@ const RegisterPatient = () => {
                           onChange={handleChange}
                           multiline
                           fullWidth
+                          required
                         />
                       </Grid>
                     </Grid>
@@ -219,6 +263,7 @@ const RegisterPatient = () => {
                           value={patientDetails.City}
                           onChange={handleChange}
                           fullWidth
+                          reuiqred
                         />
                       </Grid>
                       <Grid item xl={4} lg={4} md={4} sm={4} xs={12}>
@@ -229,6 +274,7 @@ const RegisterPatient = () => {
                           value={patientDetails.State}
                           onChange={handleChange}
                           fullWidth
+                          required
                         />
                       </Grid>
                       <Grid item xl={4} lg={4} md={4} sm={4} xs={12}>
@@ -239,6 +285,8 @@ const RegisterPatient = () => {
                           value={patientDetails.Pincode}
                           onChange={handleChange}
                           fullWidth
+                          type="number"
+                          required
                         />
                       </Grid>
                     </Grid>

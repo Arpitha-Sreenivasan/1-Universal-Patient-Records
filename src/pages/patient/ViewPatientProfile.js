@@ -1,25 +1,24 @@
-import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import React from "react";
+import { useState, useEffect } from "react";
 import {
-  Box,
-  Button,
+  Grid,
   Card,
   CardContent,
-  Container,
-  FormControl,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Select,
-  Stack,
   TextField,
   Typography,
+  Container,
+  FormControl,
+  Box,
+  Stack,
+  InputLabel,
+  Select,
+  MenuItem,
+  Button,
 } from "@mui/material";
-import React from "react";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
 
-const RegisterDoctor = () => {
+const ViewPatientProfile = () => {
   const initialState = {
     First_Name: "",
     Last_Name: "",
@@ -29,88 +28,63 @@ const RegisterDoctor = () => {
     Contact: "",
     DOB: Date.now(),
     Gender: "",
-    LocationID: Date.now(),
     Street: "",
     City: "",
     State: "",
     Pincode: "",
-    License_Number: "",
-    Qualification: "",
     Habits: [],
     Chronic_Disease: [],
-    Is_verified: true,
-    Is_active: true,
   };
 
-  const [doctorDetails, setDoctorDetails] = useState(initialState);
+  const [patientDetails, setPatientDetails] = useState(initialState);
 
-  const navigate = useNavigate();
+  const [editable, setEditable] = useState(true);
+
+  const [buttonDisable, setButtonDisbale] = useState(false);
 
   const handleChange = (event) => {
     let { name, value } = event.target;
-    setDoctorDetails({ ...doctorDetails, [name]: value });
+    setPatientDetails({
+      ...patientDetails,
+      [name]: value,
+    });
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleEdit = () => {
+    console.log("Edit button clicked");
+    setEditable(false);
+    setButtonDisbale(true);
+  };
 
-    console.log(doctorDetails);
-
-    const locationObject = {
-      LocationID: doctorDetails.LocationID,
-      Street: doctorDetails.Street,
-      City: doctorDetails.City,
-      State: doctorDetails.State,
-      Pincode: doctorDetails.Pincode,
-    };
-
-    const urlLocation = "http://localhost:8000/addLocation/";
-    const responseLocation = await fetch(urlLocation, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(locationObject),
-    });
-    if (responseLocation.status == 201) {
-      console.log("ADDRESS INSERTED");
-
-      const urlDoctor = "http://localhost:8000/addDoctor/";
-      const responseDoctor = await fetch(urlDoctor, {
-        method: "POST",
+  useEffect(() => {
+    const getPatient = async () => {
+      const url = `http://localhost:8000/addTest/${patientDetails.Aadhaar_Number}`;
+      const response = await fetch(url, {
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(doctorDetails),
       });
-
-      if (responseDoctor.status == 201) {
-        console.log("DOCTOR INSERTED");
-
-        const urlPatient = "http://localhost:8000/addPatient/";
-        const responsePatient = await fetch(urlPatient, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(doctorDetails),
-        });
-
-        if (responsePatient.status == 201) {
-          console.log("PATIENT INSERTED");
-
-          navigate("../Login");
-        }
+      if (response.status == 200) {
+        return response;
       }
-    }
-  };
+    };
+    const patientResponse = getPatient();
+    patientResponse
+      .then((response) => {
+        response.json();
+      })
+      .then((data) => {
+        console.log(data);
+      });
+  }, []);
 
   return (
     <>
       <Container style={{ position: "relative" }}>
         <Card elevation={6}>
           <CardContent sx={{ margin: "30px" }}>
-            <form onSubmit={handleSubmit}>
+            <form>
               <FormControl sx={{ width: "100%" }}>
                 <Box sx={{ flexGrow: "1" }}>
                   <Grid
@@ -136,10 +110,12 @@ const RegisterDoctor = () => {
                           name="First_Name"
                           id="First_Name"
                           label="First Name"
-                          value={doctorDetails.First_Name}
+                          value={patientDetails.First_Name}
                           onChange={handleChange}
                           fullWidth
-                          required
+                          InputProps={{
+                            readOnly: editable,
+                          }}
                         />
                       </Grid>
                       <Grid item xl={6} lg={6} md={6} sm={6} xs={12}>
@@ -147,38 +123,22 @@ const RegisterDoctor = () => {
                           name="Last_Name"
                           id="Last_Name"
                           label="Last Name"
-                          value={doctorDetails.Last_Name}
                           onChange={handleChange}
+                          value={patientDetails.Last_Name}
                           fullWidth
-                          required
                         />
                       </Grid>
                     </Grid>
                     {/* EMAIL, PASSWORD */}
                     <Grid container spacing={4}>
-                      <Grid item xl={6} lg={6} md={6} sm={6} xs={12}>
+                      <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
                         <TextField
                           name="Email"
-                          type="email"
                           id="Email"
                           label="Email Address"
-                          value={doctorDetails.Email}
                           onChange={handleChange}
+                          value={patientDetails.Email}
                           fullWidth
-                          required
-                        />
-                      </Grid>
-                      <Grid item xl={6} lg={6} md={6} sm={6} xs={12}>
-                        <TextField
-                          name="Password"
-                          type="password"
-                          id="Password"
-                          label="Password"
-                          value={doctorDetails.Password}
-                          onChange={handleChange}
-                          fullWidth
-                          required
-                          inputProps={{ minLength: 6, maxLength: 14 }}
                         />
                       </Grid>
                     </Grid>
@@ -190,10 +150,10 @@ const RegisterDoctor = () => {
                             <DesktopDatePicker
                               label="Date of Birth"
                               inputFormat="dd/MM/yyyy"
-                              value={doctorDetails.DOB}
+                              value={patientDetails.DOB}
                               onChange={(newValue) =>
-                                setDoctorDetails({
-                                  ...doctorDetails,
+                                setPatientDetails({
+                                  ...patientDetails,
                                   DOB: newValue,
                                 })
                               }
@@ -206,15 +166,12 @@ const RegisterDoctor = () => {
                       </Grid>
                       <Grid item xl={6} lg={6} md={6} sm={6} xs={12}>
                         <TextField
-                          type="number"
                           name="Aadhaar_Number"
                           id="Aadhaar_Number"
                           label="Aadhar Number"
-                          value={doctorDetails.Aadhaar_Number}
                           onChange={handleChange}
+                          value={patientDetails.Aadhaar_Number}
                           fullWidth
-                          required
-                          inputProps={{ min: 100000000000, max: 999999999999 }}
                         />
                       </Grid>
                     </Grid>
@@ -225,11 +182,9 @@ const RegisterDoctor = () => {
                           name="Contact"
                           id="Contact"
                           label="Contact Number"
-                          value={doctorDetails.Contact}
                           onChange={handleChange}
+                          value={patientDetails.Contact}
                           fullWidth
-                          required
-                          inputProps={{ minLength: 10, maxLength: 10 }}
                         />
                       </Grid>
                       <Grid item xl={6} lg={6} md={6} sm={6} xs={12}>
@@ -241,10 +196,9 @@ const RegisterDoctor = () => {
                             name="Gender"
                             label="Gender"
                             fullWidth
-                            value={doctorDetails.Gender}
-                            placeholder="Gender"
                             onChange={handleChange}
-                            required
+                            value={patientDetails.Gender}
+                            placeholder="Gender"
                           >
                             <MenuItem value={"male"}>Male</MenuItem>
                             <MenuItem value={"female"}>Female</MenuItem>
@@ -260,11 +214,10 @@ const RegisterDoctor = () => {
                           label="Please Enter Address"
                           id="Street"
                           name="Street"
-                          value={doctorDetails.Street}
                           onChange={handleChange}
+                          value={patientDetails.Street}
                           multiline
                           fullWidth
-                          required
                         />
                       </Grid>
                     </Grid>
@@ -275,10 +228,9 @@ const RegisterDoctor = () => {
                           label="City"
                           id="City"
                           name="City"
-                          value={doctorDetails.City}
                           onChange={handleChange}
+                          value={patientDetails.City}
                           fullWidth
-                          required
                         />
                       </Grid>
                       <Grid item xl={4} lg={4} md={4} sm={4} xs={12}>
@@ -286,51 +238,23 @@ const RegisterDoctor = () => {
                           label="State"
                           id="State"
                           name="State"
-                          value={doctorDetails.State}
                           onChange={handleChange}
+                          value={patientDetails.State}
                           fullWidth
-                          required
                         />
                       </Grid>
                       <Grid item xl={4} lg={4} md={4} sm={4} xs={12}>
                         <TextField
-                          type="number"
                           label="Pincode"
                           id="Pincode"
                           name="Pincode"
-                          value={doctorDetails.Pincode}
                           onChange={handleChange}
+                          value={patientDetails.Pincode}
                           fullWidth
-                          required
                         />
                       </Grid>
                     </Grid>
-                    {/* LICENSE, QUALIFICATION*/}
-                    <Grid container spacing={4}>
-                      <Grid item xl={6} lg={6} md={6} sm={6} xs={12}>
-                        <TextField
-                          label="Doctor License Number"
-                          id="License_Number"
-                          name="License_Number"
-                          value={doctorDetails.License_Number}
-                          onChange={handleChange}
-                          fullWidth
-                          required
-                        />
-                      </Grid>
-                      <Grid item xl={6} lg={6} md={6} sm={6} xs={12}>
-                        <TextField
-                          label="Qualification"
-                          id="Qualification"
-                          name="Qualification"
-                          value={doctorDetails.Qualification}
-                          onChange={handleChange}
-                          fullWidth
-                          required
-                        />
-                      </Grid>
-                    </Grid>
-                    {/*HABITS, CHRONIC DISEASE */}
+                    {/* HABITS , CHRONIC DISEASE*/}
                     <Grid container spacing={4}>
                       <Grid item xl={6} lg={6} md={6} sm={6} xs={12}>
                         <FormControl sx={{ width: "100%" }}>
@@ -343,10 +267,9 @@ const RegisterDoctor = () => {
                             name="Habits"
                             label="If any Habits"
                             fullWidth
-                            multiple
-                            value={doctorDetails.Habits}
                             onChange={handleChange}
-                            required
+                            multiple
+                            value={patientDetails.Habits}
                           >
                             <MenuItem value={"smoking"}>Smoking</MenuItem>
                             <MenuItem value={"alcohol"}>Alcohol</MenuItem>
@@ -366,9 +289,8 @@ const RegisterDoctor = () => {
                             label="If any Chronic Disease"
                             fullWidth
                             multiple
-                            value={doctorDetails.Chronic_Disease}
                             onChange={handleChange}
-                            required
+                            value={patientDetails.Chronic_Disease}
                           >
                             <MenuItem value={"Thyroid"}>Thyroid</MenuItem>
                             <MenuItem value={"Pressure"}>Pressure</MenuItem>
@@ -377,13 +299,19 @@ const RegisterDoctor = () => {
                         </FormControl>
                       </Grid>
                     </Grid>
-
                     {/* SUBMIT  */}
                     <Grid container spacing={4}>
                       <Grid item xl={6} lg={6} md={6} sm={6} xs={12}>
-                        <Button type="submit" variant="contained">
-                          Submit
+                        <Button
+                          variant="contained"
+                          onClick={handleEdit}
+                          disabled={buttonDisable}
+                        >
+                          Edit
                         </Button>
+                      </Grid>
+                      <Grid item xl={6} lg={6} md={6} sm={6} xs={12}>
+                        <Button variant="contained">Submit</Button>
                       </Grid>
                     </Grid>
                   </Grid>
@@ -397,4 +325,4 @@ const RegisterDoctor = () => {
   );
 };
 
-export default RegisterDoctor;
+export default ViewPatientProfile;

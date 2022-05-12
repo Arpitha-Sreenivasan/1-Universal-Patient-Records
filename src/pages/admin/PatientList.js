@@ -8,7 +8,7 @@ import NotVerifiedIcon from '@mui/icons-material/GppMaybeOutlined';
 import MedicalRecord from '@mui/icons-material/OpenInNew';
 import { Link } from 'react-router-dom';
 
-export default function DoctorList() {
+export default function PatientList() {
     const [selectedRow, setSelectedRow] = React.useState(null);
     const [open, setOpen] = React.useState(false);
     const handleClose = () => setOpen(false);
