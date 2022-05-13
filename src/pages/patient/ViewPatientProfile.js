@@ -32,6 +32,7 @@ const ViewPatientProfile = () => {
     City: "",
     State: "",
     Pincode: "",
+    LocationID: "",
     Habits: [],
     Chronic_Disease: [],
   };
@@ -58,25 +59,51 @@ const ViewPatientProfile = () => {
 
   useEffect(() => {
     const getPatient = async () => {
-      const url = `http://localhost:8000/addTest/${patientDetails.Aadhaar_Number}`;
-      const response = await fetch(url, {
+
+      var aadhaar = localStorage.getItem("Aadhaar_Number");
+
+      const url = `http://localhost:8000/getPatient/${aadhaar}`;
+      var response = await fetch(url, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
-      });
-      if (response.status == 200) {
-        return response;
-      }
+      }).then((response) => response.json())
+        .then((data) => {
+          console.log("Return ", data);
+          var dta = data.Habits.replace("[", "");
+          dta = dta.replace("]", "");
+
+          var newData = dta.split(",");
+
+          var dta2 = data.Chronic_Diseases.replace("[", "");
+          dta2 = dta2.replace("]", "");
+
+          var newData2 = dta2.split(",");
+
+
+          setPatientDetails({ ...patientDetails, Habits: newData, Chronic_Diseases: newData2, Aadhaar_Number: data.Aadhar_Number, LocationID: data.LocationID })
+          setPatientDetails(data);
+        })
+        .catch((error) => console.log(error));
+
+
+      const urlLocation = `http://localhost:8000/getLocation/${patientDetails.LocationID}`;
+      var response2 = await fetch(urlLocation, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((response2) => response2.json())
+        .then((data) => {
+          console.log("Return ", data);
+          setPatientDetails({ ...patientDetails, City: data.City, State: data.State, Street: data.Street })
+        })
+        .catch((error) => console.log(error));
+
     };
-    const patientResponse = getPatient();
-    patientResponse
-      .then((response) => {
-        response.json();
-      })
-      .then((data) => {
-        console.log(data);
-      });
+    getPatient()
+
   }, []);
 
   return (
@@ -125,6 +152,9 @@ const ViewPatientProfile = () => {
                           label="Last Name"
                           onChange={handleChange}
                           value={patientDetails.Last_Name}
+                          InputProps={{
+                            readOnly: editable,
+                          }}
                           fullWidth
                         />
                       </Grid>
@@ -138,6 +168,9 @@ const ViewPatientProfile = () => {
                           label="Email Address"
                           onChange={handleChange}
                           value={patientDetails.Email}
+                          InputProps={{
+                            readOnly: editable,
+                          }}
                           fullWidth
                         />
                       </Grid>
@@ -179,11 +212,15 @@ const ViewPatientProfile = () => {
                     <Grid container spacing={4}>
                       <Grid item xl={6} lg={6} md={6} sm={6} xs={12}>
                         <TextField
+                          type="number"
                           name="Contact"
                           id="Contact"
                           label="Contact Number"
                           onChange={handleChange}
                           value={patientDetails.Contact}
+                          InputProps={{
+                            readOnly: editable,
+                          }}
                           fullWidth
                         />
                       </Grid>
@@ -198,7 +235,7 @@ const ViewPatientProfile = () => {
                             fullWidth
                             onChange={handleChange}
                             value={patientDetails.Gender}
-                            placeholder="Gender"
+
                           >
                             <MenuItem value={"male"}>Male</MenuItem>
                             <MenuItem value={"female"}>Female</MenuItem>
@@ -217,6 +254,9 @@ const ViewPatientProfile = () => {
                           onChange={handleChange}
                           value={patientDetails.Street}
                           multiline
+                          InputProps={{
+                            readOnly: editable,
+                          }}
                           fullWidth
                         />
                       </Grid>
@@ -230,6 +270,9 @@ const ViewPatientProfile = () => {
                           name="City"
                           onChange={handleChange}
                           value={patientDetails.City}
+                          InputProps={{
+                            readOnly: editable,
+                          }}
                           fullWidth
                         />
                       </Grid>
@@ -240,6 +283,9 @@ const ViewPatientProfile = () => {
                           name="State"
                           onChange={handleChange}
                           value={patientDetails.State}
+                          InputProps={{
+                            readOnly: editable,
+                          }}
                           fullWidth
                         />
                       </Grid>
@@ -250,6 +296,9 @@ const ViewPatientProfile = () => {
                           name="Pincode"
                           onChange={handleChange}
                           value={patientDetails.Pincode}
+                          InputProps={{
+                            readOnly: editable,
+                          }}
                           fullWidth
                         />
                       </Grid>
@@ -257,46 +306,30 @@ const ViewPatientProfile = () => {
                     {/* HABITS , CHRONIC DISEASE*/}
                     <Grid container spacing={4}>
                       <Grid item xl={6} lg={6} md={6} sm={6} xs={12}>
-                        <FormControl sx={{ width: "100%" }}>
-                          <InputLabel id="habits_label">
-                            If any Habits
-                          </InputLabel>
-                          <Select
-                            labelId="habits_label"
-                            id="Habits"
-                            name="Habits"
-                            label="If any Habits"
-                            fullWidth
-                            onChange={handleChange}
-                            multiple
-                            value={patientDetails.Habits}
-                          >
-                            <MenuItem value={"smoking"}>Smoking</MenuItem>
-                            <MenuItem value={"alcohol"}>Alcohol</MenuItem>
-                            <MenuItem value={"tobacco"}>Tobacco</MenuItem>
-                          </Select>
-                        </FormControl>
+                        <TextField
+                          label="If any Habits"
+                          id="Habits"
+                          name="Habits"
+                          onChange={handleChange}
+                          value={patientDetails.Habits}
+                          InputProps={{
+                            readOnly: editable,
+                          }}
+                          fullWidth
+                        />
                       </Grid>
                       <Grid item xl={6} lg={6} md={6} sm={6} xs={12}>
-                        <FormControl sx={{ width: "100%" }}>
-                          <InputLabel id="chronic_disease_label">
-                            If any Chronic Disease
-                          </InputLabel>
-                          <Select
-                            labelId="chronic_disease_label"
-                            id="Chronic_Disease"
-                            name="Chronic_Disease"
-                            label="If any Chronic Disease"
-                            fullWidth
-                            multiple
-                            onChange={handleChange}
-                            value={patientDetails.Chronic_Disease}
-                          >
-                            <MenuItem value={"Thyroid"}>Thyroid</MenuItem>
-                            <MenuItem value={"Pressure"}>Pressure</MenuItem>
-                            <MenuItem value={"Diabetes"}>Diabetes</MenuItem>
-                          </Select>
-                        </FormControl>
+                        <TextField
+                          label="Chronic diseases"
+                          id="Chronic_Diseases"
+                          name="Chronic_Diseases"
+                          onChange={handleChange}
+                          value={patientDetails.Chronic_Diseases}
+                          InputProps={{
+                            readOnly: editable,
+                          }}
+                          fullWidth
+                        />
                       </Grid>
                     </Grid>
                     {/* SUBMIT  */}

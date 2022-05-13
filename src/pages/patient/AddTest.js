@@ -42,14 +42,17 @@ const AddTest = () => {
     formData.append("Test_Name", test.Test_Name);
     formData.append("Test_Date", test.Test_Date);
     formData.append("Test_PDF", test.Test_PDF);
-
+    console.log(formData);
+    console.log(formData.get("Aadhaar_Number"));
+    
     const url = "http://localhost:8000/addTest/";
     const response = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(formData),
+      body: JSON.stringify(test),
+
     });
 
     if (response.status == 201) {

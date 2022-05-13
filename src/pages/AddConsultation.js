@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import {useNavigate} from "react-router-dom"
 
 const AddConsultation = () => {
   const initialState = {
@@ -29,7 +30,7 @@ const AddConsultation = () => {
   };
 
   const [consultation, setConsultation] = useState(initialState);
-
+  const navigate = useNavigate();
   const handleChange = (event) => {
     let { name, value } = event.target;
     setConsultation({
@@ -54,6 +55,8 @@ const AddConsultation = () => {
     if (response.status == 201) {
       console.log("CONSULTATION ADDED");
       // TODO: REDIRECT TO VIEW CONSULTATIONS PAGE
+      var aadhar = localStorage.getItem("Aadhaar_Number");
+      navigate(`/${aadhar}/records`);
     }
   };
 
